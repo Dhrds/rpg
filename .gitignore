@@ -1,0 +1,11 @@
+
+# Arquivos de ambiente
+.env.dev
+.env.test
+.env.prod
+.env
+/venv
+# Arquivos de log
+*.log
+/__pycache__/**
+*.pyc

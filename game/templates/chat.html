@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %} D&D {% endblock title %}
+{% block conteudo %}
+<div class="chat-container">
+    {% comment %} <div class="sidebar">
+        <h2>rpg</h2>
+        <ul>
+            <li>Atendimento</li>
+            <li>Suporte Técnico</li>
+        </ul>
+    </div> {% endcomment %}
+    <div class="chat">
+        <div class="chat-header">
+            <h1>
+                D&D
+            </h1>
+        </div>
+        <div class="chat-messages">
+            {% for i in resposta %}
+            {% if i.role == "user" %}
+            <div class="message enviada">
+                <p>{{ i.content }}</p>
+            </div>
+            {% endif %}
+            {% if i.role == "assistant" %}
+            <div class="message received">
+                <p>{{i.content}}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+        </div>
+        <div class="chat-input">
+            <form method="post" class="chat-input">
+                {% csrf_token %}
+                <input type="text" name="mensagem" placeholder="Digite sua mensagem..." required>
+                <button type='submit'>Enviar</button>
+            </form>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="reiniciar" value="true">Reiniciar</button>
+        </div>
+        </form>
+        <button id="show-instructions">Mostrar Instruções</button>
+    </div>
+</div>
+<h1>Ficha de Personagem</h1>
+
+<section id="informacoes-gerais">
+    <h2>Informações Gerais</h2>
+    <ul>
+        <li>Nome: {{ personagem.nome }}</li>
+        <li>Raça: {{ personagem.raca }}</li>
+        <li>Classe: {{ personagem.classe.nome }} ({{ personagem.classe.subclasse }})</li>
+        <li>Alinhamento: {{ personagem.alinhamento }}</li>
+    </ul>
+
+    <h3>Histórico</h3>
+    <p>{{ personagem.historico }}</p>
+</section>
+
+<section id="atributos">
+    <h2>Atributos</h2>
+    <ul>
+        <li>Força: {{ personagem.atributos.forca }} (mod. {{ personagem.atributos.modificadorForca }})</li>
+        <li>Destreza: {{ personagem.atributos.destreza }} (mod. {{ personagem.atributos.modificadorDestreza }})</li>
+        <li>Constituição: {{ personagem.atributos.constituicao }} (mod. {{
+            personagem.atributos.modificadorConstituicao }})</li>
+        <li>Inteligência: {{ personagem.atributos.inteligencia }} (mod. {{
+            personagem.atributos.modificadorInteligencia }})</li>
+        <li>Sabedoria: {{ personagem.atributos.sabedoria }} (mod. {{ personagem.atributos.modificadorSabedoria }})
+        </li>
+        <li>Carisma: {{ personagem.atributos.carisma }} (mod. {{ personagem.atributos.modificadorCarisma }})</li>
+    </ul>
+</section>
+
+<section id="proficiencias">
+    <h2>Proficiências</h2>
+    <h3>Habilidades</h3>
+    <ul>
+        {% for habilidade in personagem.proficiencias.habilidades %}
+        <li>{{ habilidade }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Armas</h3>
+    <ul>
+        {% for arma in personagem.proficiencias.armas %}
+        <li>{{ arma }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Ferramentas</h3>
+    <ul>
+        {% for ferramenta in personagem.proficiencias.ferramentas %}
+        <li>{{ ferramenta }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Perícias</h3>
+    <ul>
+        {% for pericia in personagem.proficiencias.pericias %}
+        <li>{{ pericia }}</li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section id="equipamentos">
+    <h2>Equipamentos</h2>
+    <ul>
+        {% for equipamento in personagem.equipamentos %}
+        <li>{{ equipamento }}</li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section id="magicas">
+    <h2>Magias</h2>
+    <h3>Magias de 1º Nível</h3>
+    <ul>
+        {% for magia in personagem.magicas.primeiroNivel %}
+        <li>{{ magia }}</li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section id="caracteristicas-classe">
+    <h2>Características de Classe</h2>
+    <ul>
+        <li>Estilo de Combate: {{ personagem.caracteristicasClasse.estiloCombate }}</li>
+        <li>Defesa da Natureza: {{ personagem.caracteristicasClasse.defesaDaNatureza }}</li>
+        <li>Favorecido dos Inimigos: {{ personagem.caracteristicasClasse.favorecidoDosInimigos }}</li>
+        <li>Inimigo Predileto: {{ personagem.caracteristicasClasse.inimigoPredileto }}</li>
+    </ul>
+</section>
+
+<section id="informacoes-adicionais">
+    <h2>Informações Adicionais</h2>
+    <ul>
+        <li>Antecedentes: {{ personagem.informacoesAdicionais.antecedentes }}</li>
+        <li>Laços: {{ personagem.informacoesAdicionais.lacos }}</li>
+        <li>Ideais: {{ personagem.informacoesAdicionais.ideais }}</li>
+        <li>Personalidade: {{ personagem.informacoesAdicionais.personalidade }}</li>
+        <li>Inspiração: {{ personagem.informacoesAdicionais.inspiracao }}</li>
+    </ul>
+    <footer class="game-instructions" style="display: none;">
+        <h2>Instruções do Jogo de Simulação Médica</h2>
+        <h3>Objetivo:</h3>
+        <p>O objetivo deste jogo de simulação médica é adivinhar a doença do paciente
+            através de perguntas sobre seus sintomas e histórico médico. O jogador que
+            interpreta o médico precisa usar suas habilidades de
+            diagnóstico para identificar a doença corretamente.</p>
+
+        <p>O jogador que interpreta o médico pode fazer perguntas sobre os sintomas,
+            histórico médico e estilo de vida do paciente.</p>
+        <h3>Dicas para Novos Jogadores:</h3>
+        <p>Preste atenção aos detalhes dos sintomas do paciente.</p>
+        <p>Faça perguntas específicas para descartar possíveis doenças.</p>
+        <p>Use o histórico médico do paciente para ajudar no diagnóstico.</p>
+        <p>Se você estiver preso, peça dicas ao jogador que interpreta o paciente.</p>
+
+    </footer>
+
+
+
+    <script>
+        document.getElementById('show-instructions').addEventListener('click', function () {
+            var instructions = document.querySelector('.game-instructions');
+            instructions.style.display = instructions.style.display === 'none' ? 'block' : 'none';
+        });
+        const chatMessages = document.querySelector('.chat-messages');
+
+        // Função para rolar para a última mensagem
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Adicionar evento de "carregar" à página
+        window.addEventListener('load', scrollToBottom);
+
+        // Adicionar evento de "submit" ao formulário de envio de mensagem
+        const chatInputForm = document.querySelector('.chat-input form');
+        chatInputForm.addEventListener('submit', scrollToBottom);
+
+    </script>
+    {% endblock conteudo %}
