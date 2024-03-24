@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %} D&D {% endblock title %}
 {% block conteudo %}
@@ -57,18 +58,20 @@
 
 </section>
 <h1>Ficha de Personagem</h1>
-
-<section id="informacoes-gerais">
-    <h2>Informações Gerais</h2>
-    <ul>
-        <li>Nome: {{ personagem.nome }}</li>
-        <li>Raça: {{ personagem.raca }}</li>
-        <li>Classe: {{ personagem.classe.nome }} ({{ personagem.classe.subclasse }})</li>
-        <li>Alinhamento: {{ personagem.alinhamento }}</li>
-    </ul>
-
-    <h3>Histórico</h3>
-    <p>{{ personagem.historico }}</p>
+<div>
+    <section id="informacoes-gerais">
+        <h2>Informações Gerais</h2>
+        <ul>
+            <li>Nome: {{ personagem.nome }}</li>
+            <li>Raça: {{ personagem.raca }}</li>
+            <li>Classe: {{ personagem.classe.nome }} ({{ personagem.classe.subclasse }})</li>
+            <li>Alinhamento: {{ personagem.alinhamento }}</li>
+        </ul>
+        
+        <h3>Histórico</h3>
+        <p>{{ personagem.historico }}</p>
+        <img src="{% static 'personagem.jpeg' %}" >
+</div>
 </section>
 
 <section id="atributos">

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import openai
 import os
-
+# noqa E501  
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 jogador = {
@@ -12,7 +12,13 @@ jogador = {
             "subclasse": "Arqueira Mística"
         },
         "alinhamento": "Neutra e Boa",
-        "historico": "Filha de um renomado guerreiro élfico e de uma sábia druida, Elora sempre se sentiu atraída pela natureza e pela aventura. Desde pequena, treinava arco e flecha com seu pai, aprendendo a se camuflar na floresta com sua mãe. Aos 100 anos, Elora partiu em sua primeira jornada, buscando explorar o mundo e ajudar os necessitados.", # noqa E501
+        "historico": """
+            Filha de um renomado guerreiro élfico e de uma sábia druida,
+            Elora sempre se sentiu atraída pela natureza e pela aventura.
+            Desde pequena, treinava arco e flecha com seu pai,
+            aprendendo a se camuflar na floresta com sua mãe.
+            Aos 100 anos, Elora partiu em sua primeira jornada,
+            buscando explorar o mundo e ajudar os necessitados.""",
         "atributos": {
             "forca": 14,
             "modificadorForca": 2,
@@ -82,25 +88,9 @@ jogador = {
             "lacos": "Irmã mais nova, Lyrissa",
             "ideais": "Proteger a natureza e ajudar os necessitados",
             "personalidade": "Aventureira, gentil, protetora",
-            "inspiracao": "Elora se inspira nos ensinamentos de sua mãe sobre a importância da natureza e na bravura de seu pai. Ela busca usar suas habilidades para proteger os fracos e lutar contra a injustiça." # noqa E501
-            }
+            "inspiracao": "Elora se inspira nos ensinamentos de sua mãe sobre a importância da natureza e na bravura de seu pai. Ela busca usar suas habilidades para proteger os fracos e lutar contra a injustiça."} # noqa
     } # noqa E501
-exemplo = """
-        Você se encontra nas profundezas de uma caverna sombria,
-        cujas paredes de pedra se estendem pela escuridão como sentinelas antigas.
-        O cheiro de mofo e abandono paira no ar,
-        misturado com o eco distante de goteiras que ressoam pelas galerias vazias.
-        Elora Galanodel, a destemida Elfa da Lua e Arqueira Mística, 
-        avança com passos cautelosos, seu instinto aguçado pela presença de perigo iminente.
-        Seu arco longo preparado, uma flecha mágica envolta em energia arcanas pronta para ser disparada.
-        Em meio às sombras dançantes, um rosnado gutural ecoa pela caverna, seguido pelo surgimento furtivo de um goblin.
-        A criatura de pele verde e olhos ardilosos segura uma lança improvisada, pronta para o combate.
-        O goblin avança em sua direção, dentes à mostra em um sorriso cruel.
-        O momento do confronto é iminente.
-        **Iniciativa:** - Elora Galanodel: 15 - Goblin: 10 Elora, você age primeiro.
-        O que deseja fazer?
-
-        """
+exemplo = """Você se encontra nas profundezas de uma caverna sombria,cujas paredes de pedra se estendem pela escuridão como sentinelas antigas. O cheiro de mofo e abandono paira no ar,misturado com o eco distante de goteiras que ressoam pelas galerias vazias. Elora Galanodel, a destemida Elfa da Lua e Arqueira Mística, avança com passos cautelosos, seu instinto aguçado pela presença de perigo iminente. Seu arco longo preparado, uma flecha mágica envolta em energia arcanas pronta para ser disparada. Em meio às sombras dançantes, um rosnado gutural ecoa pela caverna, seguido pelo surgimento furtivo de um goblin. A criatura de pele verde e olhos ardilosos segura uma lança improvisada, pronta para o combate. O goblin avança em sua direção, dentes à mostra em um sorriso cruel. O momento do confronto é iminente. **Iniciativa:** - Elora Galanodel: 15 - Goblin: 10 Elora, você age primeiro. O que deseja fazer? """ # noqa E501
 
 
 def enviar(mensagem, lista_mensagens=[], reiniciar=False):
@@ -122,9 +112,7 @@ def enviar(mensagem, lista_mensagens=[], reiniciar=False):
         EXEMPLO DE INTERAÇÃO COM O USUARIO:
     
         '{exemplo}
-        vou atirar uma flecha nela
 
-        Com a agilidade de uma verdadeira arqueira,
         Elora prepara sua flecha mágica e mira com precisão no goblin que avança em sua direção. 
         **Ataque com Arco Longo:** - 
         Rolagem de Ataque: 
@@ -138,19 +126,7 @@ def enviar(mensagem, lista_mensagens=[], reiniciar=False):
         2. Dano da Flecha: 1d8 + 3 (modificador de Destreza) Vou rolar o dado de dano para você.
         *O dado é lançado e rola para...* 
         Dano da Flecha: 5 + 3 (modificador de Destreza) = 8 de dano A flecha mágica de Elora perfura o goblin,
-        causando 8 pontos de dano. O goblin grita de dor, mas ainda está de pé, pronto para contra-atacar.
-        **Turno do Goblin:** O goblin, ferido mas determinado, avança com sua lança e tenta golpear Elora. 
-        **Ataque do Goblin com Lança:** - 
-        Rolagem de Ataque: d20 + modificador de Força Vamos fazer a rolagem para o ataque do goblin: 1.
-        Rolagem de Ataque: d20 + 2 (modificador de Força) Vou fazer a rolagem para você.
-        *O dado é lançado e rola para...* 
-        Resultado: 14 + 2 (modificador de Força) = 16 O ataque do goblin acerta Elora,
-        perfurando sua armadura de couro e causando... **Dano do Ataque do Goblin:** - Dano da Lança:
-        1d6 + modificador de Força Vou rolar o dado de dano para calcular o impacto do ataque do goblin. 
-        *O dado é lançado e rola para...* Dano da Lança: 3 + 2 (modificador de Força) = 5 pontos de dano Elora 
-        sente a dor do golpe, mas permanece firme e determinada. O combate na prisão abandonada continua.
-        **Turno de Elora:** Elora, você está ferida,
-        mas ainda tem a vantagem da distância e da precisão de seu arco longo. O que deseja fazer agora?'
+        causando 8 pontos de dano.'
       
       
         a ficha do jogador é {jogador}
@@ -163,14 +139,15 @@ def enviar(mensagem, lista_mensagens=[], reiniciar=False):
             {"role": "assistant", "content": exemplo})
     lista_mensagens.append(
         {"role": "user", "content": mensagem})
-    # print(lista_mensagens)
+    print(lista_mensagens)
 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=lista_mensagens,
-    )
-    # print(response)
-    lista_mensagens.append(response["choices"][0]["message"])
+    if not reiniciar:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=lista_mensagens,
+        )
+        print(response)
+        lista_mensagens.append(response["choices"][0]["message"])
 
     return lista_mensagens
 
@@ -184,6 +161,7 @@ def jogo_adivinhacao(request):
         reiniciar = bool(request.POST.get('reiniciar', False))
         response = enviar(mensagem_atual, reiniciar=reiniciar)
         return render(request, 'chat.html', {
-            'resposta': response})
+            'resposta': response,
+            'personagem': jogador})
     return render(request, 'chat.html', {'resposta': response,
                                          'personagem': jogador})
