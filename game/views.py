@@ -12,7 +12,7 @@ jogador = {
             "subclasse": "Arqueira Mística"
         },
         "alinhamento": "Neutra e Boa",
-        "historico": "Filha de um renomado guerreiro élfico e de uma sábia druida, Elora sempre se sentiu atraída pela natureza e pela aventura. Desde pequena, treinava arco e flecha com seu pai, aprendendo a se camuflar na floresta com sua mãe. Aos 100 anos, Elora partiu em sua primeira jornada, buscando explorar o mundo e ajudar os necessitados.",
+        "historico": "Filha de um renomado guerreiro élfico e de uma sábia druida, Elora sempre se sentiu atraída pela natureza e pela aventura. Desde pequena, treinava arco e flecha com seu pai, aprendendo a se camuflar na floresta com sua mãe. Aos 100 anos, Elora partiu em sua primeira jornada, buscando explorar o mundo e ajudar os necessitados.", # noqa E501
         "atributos": {
             "forca": 14,
             "modificadorForca": 2,
@@ -74,7 +74,7 @@ jogador = {
         "caracteristicasClasse": {
             "estiloCombate": "Arquearia",
             "defesaDaNatureza": " +1 em CA quando não estiver usando armadura",
-            "favorecidoDosInimigos": "+2 em testes de Percepção para rastrear criaturas favoritas",
+            "favorecidoDosInimigos": "+2 em testes de Percepção para rastrear criaturas favoritas", # noqa E501
             "inimigoPredileto": "+4 em dano contra criaturas favoritas"
             },
         "informacoesAdicionais": {
@@ -82,29 +82,11 @@ jogador = {
             "lacos": "Irmã mais nova, Lyrissa",
             "ideais": "Proteger a natureza e ajudar os necessitados",
             "personalidade": "Aventureira, gentil, protetora",
-            "inspiracao": "Elora se inspira nos ensinamentos de sua mãe sobre a importância da natureza e na bravura de seu pai. Ela busca usar suas habilidades para proteger os fracos e lutar contra a injustiça."
+            "inspiracao": "Elora se inspira nos ensinamentos de sua mãe sobre a importância da natureza e na bravura de seu pai. Ela busca usar suas habilidades para proteger os fracos e lutar contra a injustiça." # noqa E501
             }
-    }
-
-def enviar(mensagem, lista_mensagens=[], reiniciar=False):
-    if reiniciar:
-        lista_mensagens.clear()
-    if not lista_mensagens:
-        lista_mensagens.append(
-            {
-                "role": "system", "content":
-                f"""
-    Você sera um narrador de D&D.
-    sera um combate entre o jogador e um goblin.
-    o cenário escolhido é uma caverna que é uma prisão abandonada , 
-    um lugar repleto de mistérios e perigos.
-    
-    Preparem-se para uma jornada épica, onde a coragem e a astúcia serão testadas ao limite.
-    Que suas escolhas moldem o destino deste mundo e que suas proezas sejam cantadas por gerações.
-    
-    EXEMPLO DE INTERAÇÃO COM O USUARIO:
-    
-        'Você se encontra nas profundezas de uma caverna sombria,
+    } # noqa E501
+exemplo = """
+        Você se encontra nas profundezas de uma caverna sombria,
         cujas paredes de pedra se estendem pela escuridão como sentinelas antigas.
         O cheiro de mofo e abandono paira no ar,
         misturado com o eco distante de goteiras que ressoam pelas galerias vazias.
@@ -118,6 +100,28 @@ def enviar(mensagem, lista_mensagens=[], reiniciar=False):
         **Iniciativa:** - Elora Galanodel: 15 - Goblin: 10 Elora, você age primeiro.
         O que deseja fazer?
 
+        """
+
+
+def enviar(mensagem, lista_mensagens=[], reiniciar=False):
+    if reiniciar:
+        lista_mensagens.clear()
+    if not lista_mensagens:
+        lista_mensagens.append(
+            {
+                "role": "system", "content":
+                f"""
+        Você sera um narrador de D&D.
+        sera um combate entre o jogador e um goblin.
+        o cenário escolhido é uma caverna que é uma prisão abandonada , 
+        um lugar repleto de mistérios e perigos.
+        
+        Preparem-se para uma jornada épica, onde a coragem e a astúcia serão testadas ao limite.
+        Que suas escolhas moldem o destino deste mundo e que suas proezas sejam cantadas por gerações.
+        
+        EXEMPLO DE INTERAÇÃO COM O USUARIO:
+    
+        '{exemplo}
         vou atirar uma flecha nela
 
         Com a agilidade de uma verdadeira arqueira,
@@ -149,15 +153,16 @@ def enviar(mensagem, lista_mensagens=[], reiniciar=False):
         mas ainda tem a vantagem da distância e da precisão de seu arco longo. O que deseja fazer agora?'
       
       
-    a ficha do jogador é {jogador}
+        a ficha do jogador é {jogador}
     
     
                 """ # noqa E501
             }
         )
+        lista_mensagens.append(
+            {"role": "assistant", "content": exemplo})
     lista_mensagens.append(
-        {"role": "user", "content": mensagem}
-    )
+        {"role": "user", "content": mensagem})
     # print(lista_mensagens)
 
     response = openai.ChatCompletion.create(
@@ -173,11 +178,12 @@ def enviar(mensagem, lista_mensagens=[], reiniciar=False):
 def jogo_adivinhacao(request):
 
     if request.method == 'GET':
-        response = enviar('', reiniciar=True)
+        response = [{'role': 'assistant', 'content': exemplo}]
     elif request.method == 'POST':
         mensagem_atual = request.POST.get('mensagem', '')
         reiniciar = bool(request.POST.get('reiniciar', False))
         response = enviar(mensagem_atual, reiniciar=reiniciar)
         return render(request, 'chat.html', {
             'resposta': response})
-    return render(request, 'chat.html', {'resposta': response, 'personagem':jogador})
+    return render(request, 'chat.html', {'resposta': response,
+                                         'personagem': jogador})
