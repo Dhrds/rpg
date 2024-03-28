@@ -24,7 +24,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
         # debug
     'debug_toolbar',
-    "game"
+    "game",
+    "gerar_img",
 ]
 
 MIDDLEWARE = [
