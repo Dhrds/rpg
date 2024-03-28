@@ -11,13 +11,18 @@ def enviar(mensagem, lista_mensagens=[]):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=lista_mensagens,
+        stream=True
     )
-    lista_mensagens.append(response["choices"][0]["message"])
+    return response
 
-    return response["choices"][0]["message"]['content']
+
+def main():
+    response = enviar("me fale sobre a api do chatgpt")
+    print(response)
+    for chunk in response:
+        if chunk.choices[0].delta.content is not None:
+            print(chunk.choices[0].delta.content, end="")
 
 
 if __name__ == "__main__":
-    while (True):
-        resposta = enviar(input("Digite uma mensagem: "))
-        print(resposta)
+    main()

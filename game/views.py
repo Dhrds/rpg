@@ -147,7 +147,7 @@ def enviar(mensagem, lista_mensagens=[], reiniciar=False):
             messages=lista_mensagens,
         )
         print(response)
-        lista_mensagens.append(response["choices"][0]["message"])
+            lista_mensagens.append(response["choices"][0]["message"])
 
     return lista_mensagens
 
