@@ -1,154 +1,149 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
 {% load static %}
 {% block title %} D&D {% endblock title %}
 {% block conteudo %}
 
-<div class="chat-container">
-    <div class="chat">
-        <div class="chat-header">
-            <h1>
-                Aventura
-            </h1>
-        </div>        
-        <div class="chat-messages">
-            {% for i in resposta %}
-            {% if i.role == "user" %}
-            <div class="message enviada">    
-                <p>{{ i.content|safe }}</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="chat-container">
+        <div class="chat">
+          <div class="chat-header">
+            <h1>Aventura</h1>
+          </div>
+          <div class="chat-messages">
+            {% for i in resposta %} {% if i.role == "user" %}
+            <div class="message enviada">
+              <p>{{ i.content|safe }}</p>
             </div>
-            {% endif %}
-            {% if i.role == "assistant" %}
+            {% endif %} {% if i.role == "assistant" %}
             <div class="message received">
-                <p> {{i.content|safe}}</p>
+              <p>{{i.content|safe}}</p>
             </div>
-            {% endif %}
-            {% endfor %}
-
-        </div>
-        <div class="chat-input">
+            {% endif %} {% endfor %}
+          </div>
+          <div class="chat-input">
             <form method="post" class="chat-input">
-                {% csrf_token %}
-                <input type="text" name="mensagem" placeholder="Digite sua mensagem..." required>
-                <button type='submit'>Enviar</button>
+              {% csrf_token %}
+              <input
+                type="text"
+                name="mensagem"
+                placeholder="Digite sua mensagem..."
+                required
+              />
+              <button type="submit">Enviar</button>
             </form>
-            <form method="post">
-                {% csrf_token %}
-                <button type="submit" name="reiniciar" value="true">Reiniciar</button>
+            <form method="post" class="chat-input">
+              {% csrf_token %}
+              <button type="submit" name="reiniciar" value="true">
+                Reiniciar
+              </button>
+            </form>
+            <form method="post" class="chat-input">
+              {% csrf_token %}
+              <button type="submit" name="salvar" value="true">Savar</button>
+            </form>
+          </div>
         </div>
-        </form>
-        <button id="show-instructions">Mostrar Instruções</button>
+      </div>
     </div>
+
+    <div class="col-md-4">
+      <div class="card h-100">
+        <img
+          class="card-img-top"
+          src="{{ personagem.caminho_img }}"
+          alt=""
+          srcset=""
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ personagem.nome }}</h5>
+          <p class="card-text">Raça: {{ personagem.ficha.raca }}</p>
+          <!-- Adicione outros detalhes do personagem conforme necessário -->
+
+          <h3>Atributos</h3>
+          <ul>
+            <li>
+              Força: {{ personagem.ficha.atributos.forca }} (mod. {{ personagem.ficha.atributos.modificadorForca }})
+            </li>
+            <li>
+              Destreza: {{ personagem.ficha.atributos.destreza }} (mod. {{ personagem.ficha.atributos.modificadorDestreza }})
+            </li>
+            <li>
+              Constituição: {{ personagem.ficha.atributos.constituicao }} (mod. {{ personagem.ficha.atributos.modificadorConstituicao }})
+            </li>
+            <li>
+              Inteligência: {{ personagem.ficha.atributos.inteligencia }} (mod.
+              {{ personagem.ficha.atributos.modificadorInteligencia }})
+            </li>
+            <li>
+              Sabedoria: {{ personagem.ficha.atributos.sabedoria }} (mod. {{ personagem.ficha.atributos.modificadorSabedoria }})
+            </li>
+            <li>
+              Carisma: {{ personagem.ficha.atributos.carisma }} (mod. {{ personagem.ficha.atributos.modificadorCarisma }})
+            </li>
+          </ul>
+          <section id="proficiencias">
+            <h3>Proficiências</h3>
+            <h4>Habilidades</h4>
+            <ul>
+              {% for habilidade in personagem.ficha.proficiencias.habilidades %}
+              <li>{{ habilidade }}</li>
+              {% endfor %}
+            </ul>
+
+            <h4>Armas</h4>
+            <ul>
+              {% for arma in personagem.ficha.proficiencias.armas %}
+              <li>{{ arma }}</li>
+              {% endfor %}
+            </ul>
+          </section>
+
+          <section id="equipamentos">
+            <h3>Equipamentos</h3>
+            <ul>
+              {% for equipamento in personagem.ficha.equipamentos %}
+              <li>{{ equipamento }}</li>
+              {% endfor %}
+            </ul>
+          </section>
+
+          <section id="magicas">
+            <h3>Magias</h3>
+            <h4>Magias de 1º Nível</h4>
+            <ul>
+              {% for magia in personagem.ficha.magicas.primeiroNivel %}
+              <li>{{ magia }}</li>
+              {% endfor %}
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="chat">
-<section class="game-instructions" style="display: none;">
-    <h2>Instruções do Jogo de Simulação Médica</h2>
-    <h3>Objetivo:</h3>
-    <p>O objetivo deste jogo de simulação médica é adivinhar a doença do paciente
-        através de perguntas sobre seus sintomas e histórico médico. O jogador que
-        interpreta o médico precisa usar suas habilidades de
-        diagnóstico para identificar a doença corretamente.</p>
-
-    <p>O jogador que interpreta o médico pode fazer perguntas sobre os sintomas,
-        histórico médico e estilo de vida do paciente.</p>
-    <h3>Dicas para Novos Jogadores:</h3>
-    <p>Preste atenção aos detalhes dos sintomas do paciente.</p>
-    <p>Faça perguntas específicas para descartar possíveis doenças.</p>
-    <p>Use o histórico médico do paciente para ajudar no diagnóstico.</p>
-    <p>Se você estiver preso, peça dicas ao jogador que interpreta o paciente.</p>
-
-</section>
-<header>
-    <h1>Ficha de Personagem</h1>
-    <h2>{{ personagem.nome }}</h2>
-    <img src="{% static 'personagem.jpeg' %}" alt="Imagem do personagem" class="img-personagem">
-</header>
-
-<main>
-    <section id="informacoes-gerais">
-        <h3>Informações Gerais</h3>
-        <ul>
-            <li>Raça: {{ personagem.raca }}</li>
-            <li>Classe: {{ personagem.classe.nome }} ({{ personagem.classe.subclasse }})</li>
-            <li>Alinhamento: {{ personagem.alinhamento }}</li>
-        </ul>
-
-        <h3>Histórico</h3>
-        <p>{{ personagem.historico }}</p>
-    </section>
-
-    <section id="atributos">
-        <h3>Atributos</h3>
-        <ul>
-            <li>Força: {{ personagem.atributos.forca }} (mod. {{ personagem.atributos.modificadorForca }})</li>
-            <li>Destreza: {{ personagem.atributos.destreza }} (mod. {{ personagem.atributos.modificadorDestreza }})</li>
-            <li>Constituição: {{ personagem.atributos.constituicao }} (mod. {{ personagem.atributos.modificadorConstituicao }})</li>
-            <li>Inteligência: {{ personagem.atributos.inteligencia }} (mod. {{ personagem.atributos.modificadorInteligencia }})</li>
-            <li>Sabedoria: {{ personagem.atributos.sabedoria }} (mod. {{ personagem.atributos.modificadorSabedoria }})</li>
-            <li>Carisma: {{ personagem.atributos.carisma }} (mod. {{ personagem.atributos.modificadorCarisma }})</li>
-        </ul>
-    </section>
-
-    <section id="proficiencias">
-        <h3>Proficiências</h3>
-        <h4>Habilidades</h4>
-        <ul>
-            {% for habilidade in personagem.proficiencias.habilidades %}
-            <li>{{ habilidade }}</li>
-            {% endfor %}
-        </ul>
-
-        <h4>Armas</h4>
-        <ul>
-            {% for arma in personagem.proficiencias.armas %}
-            <li>{{ arma }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-
-    <section id="equipamentos">
-        <h3>Equipamentos</h3>
-        <ul>
-            {% for equipamento in personagem.equipamentos %}
-            <li>{{ equipamento }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-
-    <section id="magicas">
-        <h3>Magias</h3>
-        <h4>Magias de 1º Nível</h4>
-        <ul>
-            {% for magia in personagem.magicas.primeiroNivel  %}
-            <li>{{ magia }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-
-
-
-
-
-</div>
-
 
 <script>
-    document.getElementById('show-instructions').addEventListener('click', function () {
-        var instructions = document.querySelector('.game-instructions');
-        instructions.style.display = instructions.style.display === 'none' ? 'block' : 'none';
+  document
+    .getElementById("show-instructions")
+    .addEventListener("click", function () {
+      var instructions = document.querySelector(".game-instructions");
+      instructions.style.display =
+        instructions.style.display === "none" ? "block" : "none";
     });
-    const chatMessages = document.querySelector('.chat-messages');
+  const chatMessages = document.querySelector(".chat-messages");
 
-    // Função para rolar para a última mensagem
-    function scrollToBottom() {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
+  // Função para rolar para a última mensagem
+  function scrollToBottom() {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 
-    // Adicionar evento de "carregar" à página
-    window.addEventListener('load', scrollToBottom);
+  // Adicionar evento de "carregar" à página
+  window.addEventListener("load", scrollToBottom);
 
-    // Adicionar evento de "submit" ao formulário de envio de mensagem
-    const chatInputForm = document.querySelector('.chat-input form');
-    chatInputForm.addEventListener('submit', scrollToBottom);
-
+  // Adicionar evento de "submit" ao formulário de envio de mensagem
+  const chatInputForm = document.querySelector(".chat-input form");
+  chatInputForm.addEventListener("submit", scrollToBottom);
 </script>
 {% endblock conteudo %}

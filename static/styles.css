@@ -35,7 +35,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background-color: #fff; /* White background for chat content */
+    /* background-color: #fff;  White background for chat content */ 
     border-radius: 5px; /* Gentle rounded corners */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     padding: 20px;
@@ -43,7 +43,7 @@ body {
 
 
 .chat-header {
-    background-color: #db4315; /* Darker blue for header */
+    background-color: #db4315dc; /* Darker blue for header */
     color: #fff;
     padding: 15px 20px;
     border-radius: 5px 5px 0 0; /* Rounded top corners */
@@ -82,20 +82,21 @@ body {
   }
 
   .message.enviada {
-    background-color: #e0f2f1; /* Light blue for user messages */
+    background-color: #e0f2f1e0; /* Light blue for user messages */
     color: #000;
   }
 
   .message.received {
-    background-color: #9c9c9c; /* Light gray for assistant messages */
+    background-color: #9c9c9ce0; /* Light gray for assistant messages */
     color: #333;
   }
 
 .chat-input {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 15px; /* Consistent padding for input area */
-  background-color: #f0f0f0; /* Light gray background for input area */
+  /* background-color: #f0f0f0c4;  */
   border-radius: 5px 0 0 5px; /* Rounded bottom corners */
 }
 
@@ -108,7 +109,7 @@ body {
   }
 
   .chat-input button {
-    background-color: #075e54;
+    background-color: #ff0000;
     color: #fff;
     border: none;
     padding: 10px 20px;
