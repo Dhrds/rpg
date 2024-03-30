@@ -43,7 +43,7 @@ body {
 
 
 .chat-header {
-    background-color: #075e54; /* Darker blue for header */
+    background-color: #db4315; /* Darker blue for header */
     color: #fff;
     padding: 15px 20px;
     border-radius: 5px 5px 0 0; /* Rounded top corners */
@@ -63,29 +63,31 @@ body {
     overflow-y: scroll; /* Enable scrolling for long conversations */
     padding: 0; /* Remove default padding */
     margin-bottom: 10px; /* Space between messages and input area */
+    font-size: small;
   }
 
   .message {
     margin-bottom: 15px;
-    display: flex; /* Allow for message alignment and styling */
-    align-items: center; /* Align message content vertically */
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .message p {
     padding: 10px 15px; /* Consistent padding for message content */
     border-radius: 10px; /* Rounded corners for messages */
     max-width: 70%; /* Limit message width to prevent overflow */
-    word-wrap: break-word; /* Allow long words to break onto new lines */
     line-height: 1.5; /* Improve spacing between lines for readability */
+
   }
 
-  .message.enviada p {
+  .message.enviada {
     background-color: #e0f2f1; /* Light blue for user messages */
     color: #000;
   }
 
-  .message.received p {
-    background-color: #f5f5f5; /* Light gray for assistant messages */
+  .message.received {
+    background-color: #9c9c9c; /* Light gray for assistant messages */
     color: #333;
   }
 

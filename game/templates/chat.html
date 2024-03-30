@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block title %} D&D {% endblock title %}
 {% block conteudo %}
+
 <div class="chat-container">
     <div class="chat">
         <div class="chat-header">
             <h1>
-                D&D
+                Aventura
             </h1>
-        </div>
+        </div>        
         <div class="chat-messages">
             {% for i in resposta %}
             {% if i.role == "user" %}
-            <div class="message enviada">
-                <p>{{ i.content }}</p>
+            <div class="message enviada">    
+                <p>{{ i.content|safe }}</p>
             </div>
             {% endif %}
             {% if i.role == "assistant" %}
             <div class="message received">
-                <p>{{i.content}}</p>
+                <p> {{i.content|safe}}</p>
             </div>
             {% endif %}
             {% endfor %}
@@ -57,108 +57,75 @@
     <p>Se você estiver preso, peça dicas ao jogador que interpreta o paciente.</p>
 
 </section>
-<h1>Ficha de Personagem</h1>
-<div>
+<header>
+    <h1>Ficha de Personagem</h1>
+    <h2>{{ personagem.nome }}</h2>
+    <img src="{% static 'personagem.jpeg' %}" alt="Imagem do personagem" class="img-personagem">
+</header>
+
+<main>
     <section id="informacoes-gerais">
-        <h2>Informações Gerais</h2>
+        <h3>Informações Gerais</h3>
         <ul>
-            <li>Nome: {{ personagem.nome }}</li>
             <li>Raça: {{ personagem.raca }}</li>
             <li>Classe: {{ personagem.classe.nome }} ({{ personagem.classe.subclasse }})</li>
             <li>Alinhamento: {{ personagem.alinhamento }}</li>
         </ul>
-        
+
         <h3>Histórico</h3>
         <p>{{ personagem.historico }}</p>
-        <img src="{% static 'personagem.jpeg' %}" >
-</div>
-</section>
+    </section>
 
-<section id="atributos">
-    <h2>Atributos</h2>
-    <ul>
-        <li>Força: {{ personagem.atributos.forca }} (mod. {{ personagem.atributos.modificadorForca }})</li>
-        <li>Destreza: {{ personagem.atributos.destreza }} (mod. {{ personagem.atributos.modificadorDestreza }})</li>
-        <li>Constituição: {{ personagem.atributos.constituicao }} (mod. {{
-            personagem.atributos.modificadorConstituicao }})</li>
-        <li>Inteligência: {{ personagem.atributos.inteligencia }} (mod. {{
-            personagem.atributos.modificadorInteligencia }})</li>
-        <li>Sabedoria: {{ personagem.atributos.sabedoria }} (mod. {{ personagem.atributos.modificadorSabedoria }})
-        </li>
-        <li>Carisma: {{ personagem.atributos.carisma }} (mod. {{ personagem.atributos.modificadorCarisma }})</li>
-    </ul>
-</section>
+    <section id="atributos">
+        <h3>Atributos</h3>
+        <ul>
+            <li>Força: {{ personagem.atributos.forca }} (mod. {{ personagem.atributos.modificadorForca }})</li>
+            <li>Destreza: {{ personagem.atributos.destreza }} (mod. {{ personagem.atributos.modificadorDestreza }})</li>
+            <li>Constituição: {{ personagem.atributos.constituicao }} (mod. {{ personagem.atributos.modificadorConstituicao }})</li>
+            <li>Inteligência: {{ personagem.atributos.inteligencia }} (mod. {{ personagem.atributos.modificadorInteligencia }})</li>
+            <li>Sabedoria: {{ personagem.atributos.sabedoria }} (mod. {{ personagem.atributos.modificadorSabedoria }})</li>
+            <li>Carisma: {{ personagem.atributos.carisma }} (mod. {{ personagem.atributos.modificadorCarisma }})</li>
+        </ul>
+    </section>
 
-<section id="proficiencias">
-    <h2>Proficiências</h2>
-    <h3>Habilidades</h3>
-    <ul>
-        {% for habilidade in personagem.proficiencias.habilidades %}
-        <li>{{ habilidade }}</li>
-        {% endfor %}
-    </ul>
+    <section id="proficiencias">
+        <h3>Proficiências</h3>
+        <h4>Habilidades</h4>
+        <ul>
+            {% for habilidade in personagem.proficiencias.habilidades %}
+            <li>{{ habilidade }}</li>
+            {% endfor %}
+        </ul>
 
-    <h3>Armas</h3>
-    <ul>
-        {% for arma in personagem.proficiencias.armas %}
-        <li>{{ arma }}</li>
-        {% endfor %}
-    </ul>
+        <h4>Armas</h4>
+        <ul>
+            {% for arma in personagem.proficiencias.armas %}
+            <li>{{ arma }}</li>
+            {% endfor %}
+        </ul>
+    </section>
 
-    <h3>Ferramentas</h3>
-    <ul>
-        {% for ferramenta in personagem.proficiencias.ferramentas %}
-        <li>{{ ferramenta }}</li>
-        {% endfor %}
-    </ul>
+    <section id="equipamentos">
+        <h3>Equipamentos</h3>
+        <ul>
+            {% for equipamento in personagem.equipamentos %}
+            <li>{{ equipamento }}</li>
+            {% endfor %}
+        </ul>
+    </section>
 
-    <h3>Perícias</h3>
-    <ul>
-        {% for pericia in personagem.proficiencias.pericias %}
-        <li>{{ pericia }}</li>
-        {% endfor %}
-    </ul>
-</section>
+    <section id="magicas">
+        <h3>Magias</h3>
+        <h4>Magias de 1º Nível</h4>
+        <ul>
+            {% for magia in personagem.magicas.primeiroNivel  %}
+            <li>{{ magia }}</li>
+            {% endfor %}
+        </ul>
+    </section>
 
-<section id="equipamentos">
-    <h2>Equipamentos</h2>
-    <ul>
-        {% for equipamento in personagem.equipamentos %}
-        <li>{{ equipamento }}</li>
-        {% endfor %}
-    </ul>
-</section>
 
-<section id="magicas">
-    <h2>Magias</h2>
-    <h3>Magias de 1º Nível</h3>
-    <ul>
-        {% for magia in personagem.magicas.primeiroNivel %}
-        <li>{{ magia }}</li>
-        {% endfor %}
-    </ul>
-</section>
 
-<section id="caracteristicas-classe">
-    <h2>Características de Classe</h2>
-    <ul>
-        <li>Estilo de Combate: {{ personagem.caracteristicasClasse.estiloCombate }}</li>
-        <li>Defesa da Natureza: {{ personagem.caracteristicasClasse.defesaDaNatureza }}</li>
-        <li>Favorecido dos Inimigos: {{ personagem.caracteristicasClasse.favorecidoDosInimigos }}</li>
-        <li>Inimigo Predileto: {{ personagem.caracteristicasClasse.inimigoPredileto }}</li>
-    </ul>
-</section>
-
-<section id="informacoes-adicionais">
-    <h2>Informações Adicionais</h2>
-    <ul>
-        <li>Antecedentes: {{ personagem.informacoesAdicionais.antecedentes }}</li>
-        <li>Laços: {{ personagem.informacoesAdicionais.lacos }}</li>
-        <li>Ideais: {{ personagem.informacoesAdicionais.ideais }}</li>
-        <li>Personalidade: {{ personagem.informacoesAdicionais.personalidade }}</li>
-        <li>Inspiração: {{ personagem.informacoesAdicionais.inspiracao }}</li>
-    </ul>
-</section>
 
 
 </div>
