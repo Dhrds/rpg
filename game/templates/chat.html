@@ -38,10 +38,14 @@
               <button type="submit" name="reiniciar" value="true">
                 Reiniciar
               </button>
+              <audio autoplay="autoplay" controls="controls">
+                <source src="{% static "speech.mp3" %}" type="audio/mp3" />
+                seu navegador não suporta HTML5
+                </audio>
             </form>
             <form method="post" class="chat-input">
               {% csrf_token %}
-              <button type="submit" name="salvar" value="true">Savar</button>
+              <button type="submit" name="salvar" value="true">Salvar</button>
             </form>
           </div>
         </div>
@@ -59,65 +63,74 @@
         <div class="card-body">
           <h5 class="card-title">{{ personagem.nome }}</h5>
           <p class="card-text">Raça: {{ personagem.ficha.raca }}</p>
-          <!-- Adicione outros detalhes do personagem conforme necessário -->
-
-          <h3>Atributos</h3>
-          <ul>
-            <li>
-              Força: {{ personagem.ficha.atributos.forca }} (mod. {{ personagem.ficha.atributos.modificadorForca }})
-            </li>
-            <li>
-              Destreza: {{ personagem.ficha.atributos.destreza }} (mod. {{ personagem.ficha.atributos.modificadorDestreza }})
-            </li>
-            <li>
-              Constituição: {{ personagem.ficha.atributos.constituicao }} (mod. {{ personagem.ficha.atributos.modificadorConstituicao }})
-            </li>
-            <li>
-              Inteligência: {{ personagem.ficha.atributos.inteligencia }} (mod.
-              {{ personagem.ficha.atributos.modificadorInteligencia }})
-            </li>
-            <li>
-              Sabedoria: {{ personagem.ficha.atributos.sabedoria }} (mod. {{ personagem.ficha.atributos.modificadorSabedoria }})
-            </li>
-            <li>
-              Carisma: {{ personagem.ficha.atributos.carisma }} (mod. {{ personagem.ficha.atributos.modificadorCarisma }})
-            </li>
-          </ul>
-          <section id="proficiencias">
-            <h3>Proficiências</h3>
-            <h4>Habilidades</h4>
+          <button id="toggle-inf" class="btn btn-primary mt-2">
+            Mostrar/Esconder Atributos
+          </button>
+          <div class="inf">
+            
+            <h3>Atributos</h3>
             <ul>
-              {% for habilidade in personagem.ficha.proficiencias.habilidades %}
-              <li>{{ habilidade }}</li>
-              {% endfor %}
+              <li>
+                Força: {{ personagem.ficha.atributos.forca }} (mod. {{
+                personagem.ficha.atributos.modificadorForca }})
+              </li>
+              <li>
+                Destreza: {{ personagem.ficha.atributos.destreza }} (mod. {{
+                personagem.ficha.atributos.modificadorDestreza }})
+              </li>
+              <li>
+                Constituição: {{ personagem.ficha.atributos.constituicao }}
+                (mod. {{ personagem.ficha.atributos.modificadorConstituicao }})
+              </li>
+              <li>
+                Inteligência: {{ personagem.ficha.atributos.inteligencia }}
+                (mod. {{ personagem.ficha.atributos.modificadorInteligencia }})
+              </li>
+              <li>
+                Sabedoria: {{ personagem.ficha.atributos.sabedoria }} (mod. {{
+                personagem.ficha.atributos.modificadorSabedoria }})
+              </li>
+              <li>
+                Carisma: {{ personagem.ficha.atributos.carisma }} (mod. {{
+                personagem.ficha.atributos.modificadorCarisma }})
+              </li>
             </ul>
+            <section id="proficiencias">
+              <h3>Proficiências</h3>
+              <h4>Habilidades</h4>
+              <ul>
+                {% for habilidade in personagem.ficha.proficiencias.habilidades %}
+                <li>{{ habilidade }}</li>
+                {% endfor %}
+              </ul>
 
-            <h4>Armas</h4>
-            <ul>
-              {% for arma in personagem.ficha.proficiencias.armas %}
-              <li>{{ arma }}</li>
-              {% endfor %}
-            </ul>
-          </section>
+              <h4>Armas</h4>
+              <ul>
+                {% for arma in personagem.ficha.proficiencias.armas %}
+                <li>{{ arma }}</li>
+                {% endfor %}
+              </ul>
+            </section>
 
-          <section id="equipamentos">
-            <h3>Equipamentos</h3>
-            <ul>
-              {% for equipamento in personagem.ficha.equipamentos %}
-              <li>{{ equipamento }}</li>
-              {% endfor %}
-            </ul>
-          </section>
+            <section id="equipamentos">
+              <h3>Equipamentos</h3>
+              <ul>
+                {% for equipamento in personagem.ficha.equipamentos %}
+                <li>{{ equipamento }}</li>
+                {% endfor %}
+              </ul>
+            </section>
 
-          <section id="magicas">
-            <h3>Magias</h3>
-            <h4>Magias de 1º Nível</h4>
-            <ul>
-              {% for magia in personagem.ficha.magicas.primeiroNivel %}
-              <li>{{ magia }}</li>
-              {% endfor %}
-            </ul>
-          </section>
+            <section id="magicas">
+              <h3>Magias</h3>
+              <h4>Magias de 1º Nível</h4>
+              <ul>
+                {% for magia in personagem.ficha.magicas.primeiroNivel %}
+                <li>{{ magia }}</li>
+                {% endfor %}
+              </ul>
+            </section>
+          </div>
         </div>
       </div>
     </div>

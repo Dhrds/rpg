@@ -136,6 +136,10 @@ body {
     font-size: 1.2em; /* Slightly larger heading for instructions */
   }
 
+  .inf {
+    display: none;
+  }
+
   #character-data {
     font-family: monospace;
     font-size: 14px;

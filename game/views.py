@@ -1,7 +1,11 @@
 import os
+from pathlib import Path
+from openai import OpenAI
 import openai
 from django.shortcuts import render
 from .models import Aventura, Personagem
+client = OpenAI
+client.api_key = os.getenv("OPENAI_API_KEY")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
@@ -69,18 +73,31 @@ def enviar(mensagem, id=int, lista_mensagens=[], reiniciar=False):
             você age primeiro. O que deseja fazer?
             ''' # noqa E501
              })
-    if mensagem:
-        lista_mensagens.append(
-            {"role": "user", "content": mensagem})
+        if mensagem:
+            lista_mensagens.append(
+                {"role": "user", "content": mensagem})
 
-        if not reiniciar:
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=lista_mensagens,
-            )
-            lista_mensagens.append(response["choices"][0]["message"])
+            if not reiniciar:
+                response = openai.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=lista_mensagens,
+                )
+                # print(response.choices[0].message)
+                lista_mensagens.append(response.choices[0].message)
+                ultima = lista_mensagens[-1]['content']
+                print(ultima)
+    return lista_mensagens, personagem, exemplo, ultima
 
-    return lista_mensagens, personagem, exemplo
+
+def texto_fala(texto):
+    static = Path('static')
+    speech_path = Path(__file__).parent.parent / static / "speech.mp3"
+    response = openai.audio.speech.create(
+        model="tts-1",
+        voice="alloy",
+        input=texto,
+    )
+    return response.stream_to_file(speech_path)
 
 
 def jogo_rpg(request):
@@ -100,7 +117,8 @@ def jogo_rpg(request):
         if salvar:
             historia = Aventura(json=response[0])
             historia.save()
-        print(response[1])
+        if response[3]:
+            texto_fala(response[3])
         return render(request, 'chat.html', {
             'resposta': response[0],
             'personagem': response[1]})

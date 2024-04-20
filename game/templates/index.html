@@ -2,7 +2,6 @@
 {% load static %}
 {% block title %} D&D {% endblock title %}
 {% block conteudo %}
-
     <div class="container">
       <h1 class="my-5">Selecionar Personagem</h1>
       <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -13,11 +12,10 @@
             <div class="card-body">
               <h5 class="card-title">{{ personagem.nome }}</h5>
               <p class="card-text">Raça: {{ personagem.ficha.raca }}</p>
-              <!-- Adicione outros detalhes do personagem conforme necessário -->
               <a
                 href="/aventura?id={{personagem.id}}"
                 class="btn btn-primary"
-                >Detalhes</a
+                >Selecionar</a
               >
             </div>
           </div>

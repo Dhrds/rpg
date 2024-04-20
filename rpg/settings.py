@@ -12,7 +12,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = os.getenv("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = ['54.208.220.78','localhost','127.0.0.1','3.91.224.135']
+ALLOWED_HOSTS = ['54.208.220.78','localhost','127.0.0.1','3.91.224.135','192.168.1.102']
 
 
 INSTALLED_APPS = [
@@ -40,7 +40,8 @@ MIDDLEWARE = [
 ]
 INTERNAL_IPS = [
     "127.0.0.1",
-    'localhost'
+    'localhost',
+    '192.168.1.102'
 ]
 
 ROOT_URLCONF = "rpg.urls"
